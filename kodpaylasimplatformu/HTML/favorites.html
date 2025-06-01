@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Favoriler</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f7fa;
+      color: #1f2937;
+    }
+
+    nav {
+      background-color: #1f2937;
+      padding: 1rem 2rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #60a5fa;
+    }
+
+    .container {
+      flex: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 1.5rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #2563eb;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .favorite-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .favorite-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      background-color: #fafafa;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: box-shadow 0.3s;
+      position: relative;
+    }
+
+    .favorite-item:hover {
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .fav-title {
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: #2563eb;
+      margin-bottom: 0.5rem;
+    }
+
+    .fav-author {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 1rem;
+    }
+
+    .fav-description {
+      font-size: 1rem;
+      color: #374151;
+      margin-bottom: 1rem;
+    }
+
+    .fav-code {
+      background-color: #f3f4f6;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: monospace;
+      white-space: pre-wrap;
+      font-size: 0.95rem;
+      overflow-x: auto;
+    }
+
+    .remove-favorite {
+      background-color: #ef4444;
+      color: white;
+      padding: 0.4rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      transition: background-color 0.2s;
+    }
+
+    .remove-favorite:hover {
+      background-color: #dc2626;
+    }
+
+    .favorite-item.removing {
+      animation: fadeOut 0.3s forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        height: 0;
+        padding: 0;
+        margin: 0;
+        border: none;
+      }
+    }
+
+    .no-favorites {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #6b7280;
+      margin-top: 4rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem 2rem;
+      background-color: #1f2937;
+      color: #fff;
+      margin-top: auto;
+    }
+
+    @media (max-width: 600px) {
+      nav ul {
+        flex-direction: column;
+      }
+      .container {
+        margin: 1rem;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Anasayfa</a></li>
+      <li><a href="codes.html">Kodlar</a></li>
+      <li><a href="share.html">Kod Paylaş</a></li>
+      <li><a href="favorites.html">Favoriler</a></li>
+      <li><a href="profile.html">Profil</a></li>
+      <li><a href="login.html">Giriş</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>Favorilerim</h1>
+
+    <ul class="favorite-list" id="favoriteList">
+      <!-- Favori kodlar buraya eklenecek -->
+    </ul>
+
+    <p class="no-favorites" id="noFavoritesMessage" style="display:none;">Henüz favori kod eklemediniz.</p>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Kod Tartışma Sitesi</p>
+  </footer>
+
+  <script>
+   document.addEventListener('DOMContentLoaded', function () {
+  // Favorileri localStorage'dan yükler
+  function loadFavorites() {
+    const favoritesJSON = localStorage.getItem('favorites');
+    return favoritesJSON ? JSON.parse(favoritesJSON) : [];
+  }
+
+  // Favorileri render eder
+  function renderFavorites() {
+    const favorites = loadFavorites();
+    const favoriteList = document.getElementById('favoriteList');
+    const noFavoritesMessage = document.getElementById('noFavoritesMessage');
+    
+    favoriteList.innerHTML = '';  // Listeyi temizle
+
+    if (favorites.length === 0) {
+      noFavoritesMessage.style.display = 'block';  // Eğer favori yoksa mesajı göster
+    } else {
+      noFavoritesMessage.style.display = 'none';  // Favoriler varsa mesajı gizle
+
+      favorites.forEach((favorite, index) => {
+        const li = document.createElement('li');
+        li.classList.add('favorite-item');
+        li.dataset.index = index;
+        
+        li.innerHTML = `
+          <div class="fav-title">${favorite.title}</div>
+          <div class="fav-description">${favorite.description}</div>
+<p class="">
+    <a href="code-detail.html?id=${favorite.id}" class="">Detayı Gör</a>
+  </p>          <button class="remove-favorite" data-index="${index}">Favorilerden Kaldır</button>
+        `;
+
+        favoriteList.appendChild(li);
+      });
+
+      // Kaldırma butonlarına tıklanma olaylarını ekle
+      document.querySelectorAll('.remove-favorite').forEach(button => {
+        button.addEventListener('click', function() {
+          removeFavorite(parseInt(this.dataset.index));
+        });
+      });
+    }
+  }
+
+  // Favoriyi kaldırır
+  function removeFavorite(index) {
+    let favorites = loadFavorites();
+    favorites.splice(index, 1);  // Favori listeden sil
+
+    localStorage.setItem('favorites', JSON.stringify(favorites));  // Güncellenmiş listeyi kaydet
+    renderFavorites();  // Favorileri yeniden render et
+  }
+
+  // Sayfa yüklendiğinde favorileri göster
+  renderFavorites();
+});
+
+  </script>
+
+</body>
+</html>

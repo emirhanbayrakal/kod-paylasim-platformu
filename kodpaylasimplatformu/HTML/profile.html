@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil | Kod Tartışma Sitesi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    nav {
+      background-color: #1f2937;
+      padding: 1rem 2rem;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      margin: 0 10px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: #60a5fa;
+    }
+    main {
+      display: flex; /* Kullanıcı profili ve paylaşılan kodlar yan yana olacak */
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background-color: #1f2937;
+      color: #fff;
+      margin-top: 3rem;
+    }
+
+    /* Profil Özel Stilleri */
+    .profile-container {
+      flex: 1; /* Profil kısmı geniş olmalı */
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    /* Profil Bilgileri Kartı */
+    .profile-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1rem;
+      border: 4px solid #2563eb;
+    }
+    .profile-name {
+      font-size: 1.8rem;
+      margin: 0.5rem 0;
+      color: #1f2937;
+    }
+    .profile-email {
+      color: #6b7280;
+      margin-bottom: 1rem;
+    }
+
+    /* Paylaşılan Kodlar */
+    .shared-codes-container {
+      flex: 2; /* Paylaşılan kodlar daha geniş olacak */
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .shared-codes-header {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #2563eb;
+    }
+    .code-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+    }
+    .code-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+    .code-snippet {
+      background-color: #f3f4f6;
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 1rem;
+    }
+    .code-footer {
+      margin-top: 1rem;
+      text-align: right;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column; /* Küçük ekranlarda profil ve paylaşılan kodlar üst üste gelecek */
+      }
+      .profile-container, .shared-codes-container {
+        width: 100%; /* Küçük ekranlarda her ikisi de full genişlikte olacak */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Anasayfa</a></li>
+      <li><a href="codes.html">Kodlar</a></li>
+      <li><a href="share.html">Kod Paylaş</a></li>
+      <li><a href="favorites.html">Favoriler</a></li>
+      <li><a href="profile.html">Profil</a></li>
+      <li><a href="login.html">Giriş</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="profile-container" id="profile-container">
+      <!-- Kullanıcı bilgileri burada görünecek -->
+    </div>
+
+    <div class="shared-codes-container" id="shared-codes">
+      <div class="shared-codes-header">Paylaşılan Kodlar</div>
+      <!-- Paylaşılan kodlar burada görünecek -->
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Kod Tartışma Sitesi</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      const userId = localStorage.getItem('userId'); // Kullanıcı ID'sini localStorage'dan al
+
+      // Eğer kullanıcı giriş yapmamışsa (ID yoksa)
+      if (!userId) {
+        document.getElementById('profile-container').innerHTML = `
+          <p>Giriş yapılmamış. <a href="login.html">Giriş Yap</a></p>
+        `;
+        return;
+      }
+
+      // Kullanıcı bilgilerini API'den al
+      async function fetchUserProfile(id) {
+        try {
+          const response = await fetch(`https://localhost:7031/api/Users/GetDetail?id=${id}`);
+          if (!response.ok) {
+            throw new Error('Veri alınamadı');
+          }
+          const user = await response.json();
+          return user;
+        } catch (error) {
+          console.error('API hatası:', error);
+          return null;
+        }
+      }
+
+      // Profil bilgilerini render et
+      async function renderUserProfile() {
+        const user = await fetchUserProfile(userId);
+
+        if (user && user.message === "Giriş yapılmamış") {
+          document.getElementById('profile-container').innerHTML = `
+            <p>Giriş yapılmamış. <a href="login.html">Giriş Yap</a></p>
+          `;
+        } else if (user) {
+          document.getElementById('profile-container').innerHTML = `
+            <div class="profile-card">
+              <img src="https://i.pravatar.cc/300" alt="Profil Fotoğrafı" class="profile-avatar">
+              <h2 class="profile-name">${user.name}</h2>
+              <p class="profile-email">${user.email}</p>
+            </div>
+          `;
+          renderSharedCodes(user.codes); // Kullanıcının paylaştığı kodları render et
+        }
+      }
+
+      // Paylaşılan kodları render et
+      function renderSharedCodes(codes) {
+        const sharedCodesContainer = document.getElementById('shared-codes');
+        
+        if (codes && Array.isArray(codes) && codes.length > 0) {
+          codes.forEach(code => {
+            const codeCard = document.createElement('div');
+            codeCard.classList.add('code-card');
+            codeCard.innerHTML = `
+              <div class="code-title">${code.title}</div>
+              <pre class="code-snippet">${code.codeSnippet}</pre>
+              <div class="code-footer">
+                <a href="code-detail.html?id=${code.id}">Detay</a>
+              </div>
+            `;
+            
+const codeSnippetElement = codeCard.querySelector('.code-snippet');
+codeSnippetElement.textContent = code.codeSnippet; // Bu satırda textContent kullanarak kodu ekliyoruz
+
+            sharedCodesContainer.appendChild(codeCard);
+          });
+        } else {
+          sharedCodesContainer.innerHTML = `<p>Paylaşılan kod yok.</p>`;
+        }
+      }
+
+      renderUserProfile();
+    });
+  </script>
+
+</body>
+</html>

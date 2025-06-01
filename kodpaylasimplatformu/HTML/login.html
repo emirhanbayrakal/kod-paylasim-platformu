@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giriş Yap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f7fa;
+      color: #1f2937;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: white;
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input {
+      margin-top: 0.4rem;
+      padding: 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 2rem;
+      padding: 0.8rem;
+      background-color: #1f2937;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #111827;
+    }
+
+    .message {
+      color: green;
+      text-align: center;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="message" id="successMessage">✔ Başarıyla kayıt oldunuz.</div>
+
+    <h2>Giriş Yap</h2>
+    <form id="loginForm">
+      <label for="email">E-posta</label>
+      <input type="email" id="email" name="email" required />
+      
+      <label for="password">Şifre</label>
+      <input type="password" id="password" name="password" required />
+      
+      <button type="submit">Giriş Yap</button>
+    </form>
+    <p>Hesabınız yok mu? <a href="register.html">Kayıt olun</a></p>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  try {
+    const response = await fetch('https://localhost:7031/api/users/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    // Eğer yanıt başarılıysa (response.ok true dönerse)
+    if (response.ok) {
+      const user = await response.json(); // API'den gelen kullanıcı verisi
+      localStorage.setItem('userId', user.id); // Kullanıcı ID'sini kaydet
+      localStorage.setItem('userEmail', user.email); // Kullanıcı e-posta kaydet (isteğe bağlı)
+      
+      // Başarılı giriş, index.html'ye yönlendir
+      window.location.href = 'index.html'; // Kullanıcıyı index.html sayfasına yönlendir
+    } else {
+      const error = await response.text();
+      alert('Giriş başarısız: ' + error); // Hata mesajını göster
+    }
+  } catch (err) {
+    alert('Sunucuya bağlanılamadı: ' + err.message); // Sunucuya bağlantı hatası
+  }
+});
+
+  </script>
+
+</body>
+</html>
