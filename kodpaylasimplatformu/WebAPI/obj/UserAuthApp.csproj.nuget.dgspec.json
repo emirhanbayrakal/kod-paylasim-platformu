@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Emirhan\\Desktop\\WEB API\\WebApplication1\\UserAuthApp.csproj": {}
+    "C:\\Users\\Emirhan\\Desktop\\WebAPI\\UserAuthApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Emirhan\\Desktop\\WEB API\\WebApplication1\\UserAuthApp.csproj": {
+    "C:\\Users\\Emirhan\\Desktop\\WebAPI\\UserAuthApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Emirhan\\Desktop\\WEB API\\WebApplication1\\UserAuthApp.csproj",
+        "projectUniqueName": "C:\\Users\\Emirhan\\Desktop\\WebAPI\\UserAuthApp.csproj",
         "projectName": "UserAuthApp",
-        "projectPath": "C:\\Users\\Emirhan\\Desktop\\WEB API\\WebApplication1\\UserAuthApp.csproj",
+        "projectPath": "C:\\Users\\Emirhan\\Desktop\\WebAPI\\UserAuthApp.csproj",
         "packagesPath": "C:\\Users\\Emirhan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Emirhan\\Desktop\\WEB API\\WebApplication1\\obj\\",
+        "outputPath": "C:\\Users\\Emirhan\\Desktop\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

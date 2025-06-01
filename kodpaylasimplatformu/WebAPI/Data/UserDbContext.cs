@@ -10,6 +10,9 @@ public class UserDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
-		optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=UserDB;Trusted_Connection=True;");
-	}
+        optionsBuilder.UseSqlServer(
+            "Server=db20835.public.databaseasp.net; Database=db20835; User Id=db20835; Password=g-3C4Q!tp@2F; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True; ",
+            options => options.EnableRetryOnFailure()
+        );
+    }
 }

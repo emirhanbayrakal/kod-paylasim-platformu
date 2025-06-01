@@ -26,7 +26,7 @@ public class CodesController : ControllerBase
         return Ok(result);
     }
 
-    // Kod Paylaşma (POST)
+
     [HttpPost]
     public async Task<IActionResult> ShareCode([FromBody] Code code)
     {
@@ -43,26 +43,26 @@ public class CodesController : ControllerBase
 
         try
         {
-            _context.Codes.Add(code); // Yeni kodu veritabanına ekle
-            await _context.SaveChangesAsync(); // Veritabanına kaydet
+            _context.Codes.Add(code); 
+            await _context.SaveChangesAsync(); 
 
             return Ok(new { message = "Kod başarıyla paylaşıldı." });
         }
         catch (Exception ex)
         {
-            // Hata durumunda ayrıntılı bilgi ver
+            
             return StatusCode(500, new { message = $"Kod paylaşılırken bir hata oluştu: {ex.Message}" });
         }
     }
 
-    // Kodları Listeleme (GET)
+    
     [HttpGet]
     public async Task<IActionResult> GetCodes()
         {
         try
         {
             var codes = await _context.Codes.Include(x => x.Comments).ToListAsync();
-            return Ok(codes); // Tüm kodları döndür
+            return Ok(codes); 
         }
         catch (Exception ex)
         {
@@ -93,7 +93,7 @@ public class CodesController : ControllerBase
     }
 
 
-    // Kod Silme (DELETE)
+    
     [HttpDelete("{id}")]
     public async Task<IActionResult> RemoveCode(int id)
     {
@@ -105,8 +105,8 @@ public class CodesController : ControllerBase
                 return NotFound(new { message = "Kod bulunamadı." });
             }
 
-            _context.Codes.Remove(code); // Kodu sil
-            await _context.SaveChangesAsync(); // Veritabanını güncelle
+            _context.Codes.Remove(code); 
+            await _context.SaveChangesAsync(); 
 
             return Ok(new { message = "Kod başarıyla silindi." });
         }
@@ -115,7 +115,7 @@ public class CodesController : ControllerBase
             return StatusCode(500, new
             {
                 message = $"Kod paylaşılırken bir hata oluştu: {ex.Message}",
-                details = ex.InnerException?.Message // Inner exception'a bak
+                details = ex.InnerException?.Message 
             });
         }
     }

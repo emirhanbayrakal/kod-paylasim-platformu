@@ -5,42 +5,41 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// CORS ayarlarını ekleyin
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowSpecific", builder =>
     {
-        builder.AllowAnyOrigin()  // Herhangi bir kaynağa izin ver
-               .AllowAnyMethod()  // Herhangi bir HTTP metoduna izin ver (GET, POST, vb.)
-               .AllowAnyHeader(); // Herhangi bir başlığa izin ver
+        builder.WithOrigins("http://127.0.0.1:5500", "http://kodplatform.runasp.net")  
+               .AllowAnyMethod()  
+               .AllowAnyHeader(); 
     });
 });
 
 
 
 builder.Services.AddScoped<UserDbContext>();
-// Swagger'ı yapılandırma
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add Controllers
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Swagger UI'yi kullanma
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// CORS'u kullanma
-app.UseCors("AllowAll"); // CORS politikasını uygulama
+
+app.UseCors("AllowSpecific"); 
 
 app.UseHttpsRedirection();
 
-// API Controller'ları haritalama
+
 app.MapControllers();
 
 app.Run();

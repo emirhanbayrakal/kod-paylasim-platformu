@@ -22,7 +22,7 @@ public class UsersController : ControllerBase
             return BadRequest("Bu e-posta ile daha önce kayýt olunmuþ.");
         }
 
-        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash); // Þifreyi hash'liyoruz
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash); 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
