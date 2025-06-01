@@ -191,7 +191,7 @@
     <h1>Favorilerim</h1>
 
     <ul class="favorite-list" id="favoriteList">
-      <!-- Favori kodlar buraya eklenecek -->
+
     </ul>
 
     <p class="no-favorites" id="noFavoritesMessage" style="display:none;">Henüz favori kod eklemediniz.</p>
@@ -203,24 +203,24 @@
 
   <script>
    document.addEventListener('DOMContentLoaded', function () {
-  // Favorileri localStorage'dan yükler
+
   function loadFavorites() {
     const favoritesJSON = localStorage.getItem('favorites');
     return favoritesJSON ? JSON.parse(favoritesJSON) : [];
   }
 
-  // Favorileri render eder
+
   function renderFavorites() {
     const favorites = loadFavorites();
     const favoriteList = document.getElementById('favoriteList');
     const noFavoritesMessage = document.getElementById('noFavoritesMessage');
     
-    favoriteList.innerHTML = '';  // Listeyi temizle
+    favoriteList.innerHTML = '';  
 
     if (favorites.length === 0) {
-      noFavoritesMessage.style.display = 'block';  // Eğer favori yoksa mesajı göster
+      noFavoritesMessage.style.display = 'block';  
     } else {
-      noFavoritesMessage.style.display = 'none';  // Favoriler varsa mesajı gizle
+      noFavoritesMessage.style.display = 'none';  
 
       favorites.forEach((favorite, index) => {
         const li = document.createElement('li');
@@ -238,7 +238,7 @@
         favoriteList.appendChild(li);
       });
 
-      // Kaldırma butonlarına tıklanma olaylarını ekle
+
       document.querySelectorAll('.remove-favorite').forEach(button => {
         button.addEventListener('click', function() {
           removeFavorite(parseInt(this.dataset.index));
@@ -247,16 +247,16 @@
     }
   }
 
-  // Favoriyi kaldırır
+
   function removeFavorite(index) {
     let favorites = loadFavorites();
-    favorites.splice(index, 1);  // Favori listeden sil
+    favorites.splice(index, 1);  
 
-    localStorage.setItem('favorites', JSON.stringify(favorites));  // Güncellenmiş listeyi kaydet
-    renderFavorites();  // Favorileri yeniden render et
+    localStorage.setItem('favorites', JSON.stringify(favorites));  
+    renderFavorites();  
   }
 
-  // Sayfa yüklendiğinde favorileri göster
+  
   renderFavorites();
 });
 

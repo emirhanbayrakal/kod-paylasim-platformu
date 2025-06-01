@@ -37,7 +37,7 @@
       color: #60a5fa;
     }
     main {
-      display: flex; /* Kullanıcı profili ve paylaşılan kodlar yan yana olacak */
+      display: flex; 
       gap: 2rem;
       padding: 2rem;
       max-width: 1200px;
@@ -51,9 +51,9 @@
       margin-top: 3rem;
     }
 
-    /* Profil Özel Stilleri */
+
     .profile-container {
-      flex: 1; /* Profil kısmı geniş olmalı */
+      flex: 1; 
       background: white;
       padding: 2rem;
       border-radius: 12px;
@@ -61,7 +61,7 @@
       text-align: center;
     }
 
-    /* Profil Bilgileri Kartı */
+
     .profile-avatar {
       width: 150px;
       height: 150px;
@@ -80,9 +80,9 @@
       margin-bottom: 1rem;
     }
 
-    /* Paylaşılan Kodlar */
+
     .shared-codes-container {
-      flex: 2; /* Paylaşılan kodlar daha geniş olacak */
+      flex: 2; 
       background: white;
       padding: 2rem;
       border-radius: 12px;
@@ -117,13 +117,13 @@
       text-align: right;
     }
 
-    /* Responsive design */
+
     @media (max-width: 768px) {
       main {
-        flex-direction: column; /* Küçük ekranlarda profil ve paylaşılan kodlar üst üste gelecek */
+        flex-direction: column; 
       }
       .profile-container, .shared-codes-container {
-        width: 100%; /* Küçük ekranlarda her ikisi de full genişlikte olacak */
+        width: 100%; 
       }
     }
   </style>
@@ -143,12 +143,12 @@
 
   <main>
     <div class="profile-container" id="profile-container">
-      <!-- Kullanıcı bilgileri burada görünecek -->
+
     </div>
 
     <div class="shared-codes-container" id="shared-codes">
       <div class="shared-codes-header">Paylaşılan Kodlar</div>
-      <!-- Paylaşılan kodlar burada görünecek -->
+
     </div>
   </main>
 
@@ -158,9 +158,9 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', async function () {
-      const userId = localStorage.getItem('userId'); // Kullanıcı ID'sini localStorage'dan al
+      const userId = localStorage.getItem('userId'); 
 
-      // Eğer kullanıcı giriş yapmamışsa (ID yoksa)
+
       if (!userId) {
         document.getElementById('profile-container').innerHTML = `
           <p>Giriş yapılmamış. <a href="login.html">Giriş Yap</a></p>
@@ -168,10 +168,10 @@
         return;
       }
 
-      // Kullanıcı bilgilerini API'den al
+
       async function fetchUserProfile(id) {
         try {
-          const response = await fetch(`https://localhost:7031/api/Users/GetDetail?id=${id}`);
+          const response = await fetch(`http://kodpaylasim.runasp.net/api/Users/GetDetail?id=${id}`);
           if (!response.ok) {
             throw new Error('Veri alınamadı');
           }
@@ -183,7 +183,7 @@
         }
       }
 
-      // Profil bilgilerini render et
+
       async function renderUserProfile() {
         const user = await fetchUserProfile(userId);
 
@@ -199,11 +199,11 @@
               <p class="profile-email">${user.email}</p>
             </div>
           `;
-          renderSharedCodes(user.codes); // Kullanıcının paylaştığı kodları render et
+          renderSharedCodes(user.codes); 
         }
       }
 
-      // Paylaşılan kodları render et
+
       function renderSharedCodes(codes) {
         const sharedCodesContainer = document.getElementById('shared-codes');
         
@@ -220,7 +220,7 @@
             `;
             
 const codeSnippetElement = codeCard.querySelector('.code-snippet');
-codeSnippetElement.textContent = code.codeSnippet; // Bu satırda textContent kullanarak kodu ekliyoruz
+codeSnippetElement.textContent = code.codeSnippet; 
 
             sharedCodesContainer.appendChild(codeCard);
           });

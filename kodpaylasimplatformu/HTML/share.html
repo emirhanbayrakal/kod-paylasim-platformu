@@ -159,11 +159,11 @@
   </footer>
 
   <script>
- // Form verilerini backend API'ye gönderme
+ 
 document.getElementById("shareForm").addEventListener("submit", async function(e) {
-  e.preventDefault(); // Formun default submit işlemini engelle
+  e.preventDefault(); 
 
-  // Form verilerini al
+  
   const title = document.getElementById("title").value.trim();
   const desc = document.getElementById("desc").value.trim();
   const language = document.getElementById("language").value;
@@ -174,7 +174,7 @@ document.getElementById("shareForm").addEventListener("submit", async function(e
     return;
   }
 
-  // localStorage'dan userId'yi al
+
   const userId = localStorage.getItem("userId");
 
   if (!userId) {
@@ -182,9 +182,9 @@ document.getElementById("shareForm").addEventListener("submit", async function(e
     return;
   }
 
-  // Backend API'ye POST isteği gönder
+
   try {
-    const response = await fetch("https://localhost:7031/api/codes", {
+    const response = await fetch("http://kodpaylasim.runasp.net/api/codes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -194,20 +194,20 @@ document.getElementById("shareForm").addEventListener("submit", async function(e
         description: desc,
         language,
         codeSnippet: code,
-        userId, // userId'yi de gönderiyoruz
+        userId, 
       }),
     });
 
     if (response.ok) {
-      const data = await response.json(); // API'den gelen yanıtı al
-      alert(data.message || "Kod başarıyla paylaşıldı!"); // Yanıt mesajını göster
-      window.location.href = "codes.html"; // Kod paylaşıldığında kodların listelendiği sayfaya yönlendirilir
+      const data = await response.json(); 
+      alert(data.message || "Kod başarıyla paylaşıldı!"); 
+      window.location.href = "codes.html"; 
     } else {
       const errorData = await response.json();
-      alert("Hata: " + (errorData.message || "Bilinmeyen bir hata oluştu.")); // Hata mesajını ekranda göster
+      alert("Hata: " + (errorData.message || "Bilinmeyen bir hata oluştu.")); 
     }
   } catch (error) {
-    alert("Sunucuya bağlanılamadı: " + error.message); // Sunucu hatası
+    alert("Sunucuya bağlanılamadı: " + error.message); 
   }
 });
 

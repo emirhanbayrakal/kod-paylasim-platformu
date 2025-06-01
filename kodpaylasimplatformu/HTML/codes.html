@@ -125,10 +125,10 @@
   </footer>
 
   <script>
-    // Kodları backend API'den alıp render etme
+
     async function fetchCodes() {
       try {
-        const response = await fetch("https://localhost:7031/api/codes");
+        const response = await fetch("http://kodpaylasim.runasp.net/api/codes");
         const data = await response.json();
 
         const codeList = document.getElementById('codeList');
@@ -160,16 +160,16 @@
       }
     }
 
-    // Kod silme işlemi
+
     async function removeCode(title) {
       try {
-        const response = await fetch(`https://localhost:7031/api/codes/${title}`, {
+        const response = await fetch(`http://kodpaylasim.runasp.net/api/codes/${title}`, {
           method: 'DELETE',
         });
 
         if (response.ok) {
           alert("Kod başarıyla silindi!");
-          fetchCodes();  // Kodlar güncellendikten sonra yeniden listeyi getir
+          fetchCodes();  
         } else {
           alert("Kod silinirken hata oluştu.");
         }
@@ -178,7 +178,7 @@
       }
     }
 
-    // Sayfa yüklendiğinde kodları al
+
     window.onload = fetchCodes;
   </script>
 
